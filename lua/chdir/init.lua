@@ -23,8 +23,8 @@ function M.change_directory_by_index(index)
     table.insert(dirs, "/")
 
     if index == "" then
-        vim.print(dirs[1])
-        vim.print(line)
+        vim.api.nvim_echo({{dirs[1], "None"}}, false, {})
+        vim.api.nvim_echo({{line, "None"}}, false, {})
 
         vim.fn.inputsave()
         index = vim.fn.input("Type number and <Enter> (empty cancels): ")
@@ -38,7 +38,8 @@ function M.change_directory_by_index(index)
     index = tonumber(index) or 0
     index = math.min(math.max(index, 0), #dirs - 1)
 
-    vim.cmd("cd " .. dirs[index + 1])
+    vim.cmd("redraw | cd " .. dirs[index + 1])
+    vim.api.nvim_echo({{dirs[index + 1], "None"}}, false, {})
     -- FIXME: vim.fn.expand("%:p:h") will change wired.
     -- vim.uv.chdir(dirs[index + 1])
 end
