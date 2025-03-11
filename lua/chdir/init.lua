@@ -2,25 +2,31 @@ local M = {}
 
 local default_config = {
     sign = '-',
+    start_index = 0,
 }
 
 M.config = {}
 
 function M.change_directory_by_index(index)
+    local sign = M.config.sign
+    local start_index = M.config.start_index
     local dirs = {}
-    local dirs_index = 0
+    local dirs_index = start_index
     local path = vim.fn.expand("%:p:h") or vim.fn.getcwd()
     local base = ""
     local line = ""
 
     while path ~= "/" do
         base = vim.fn.fnamemodify(path, ":t")
-        line = string.rep(M.config.sign, #base) .. dirs_index .. line
+        line = string.rep(sign, #base) .. dirs_index .. line
         table.insert(dirs, path)
         dirs_index = dirs_index + 1
         path = vim.fn.fnamemodify(path, ":h")
     end
-    table.insert(dirs, "/")
+
+    if vim.fn.has("linux") or vim.fn.has("unix") then
+        table.insert(dirs, "/")
+    end
 
     if index == "" then
         vim.api.nvim_echo({{dirs[1], "None"}}, false, {})
@@ -35,7 +41,7 @@ function M.change_directory_by_index(index)
         end
     end
 
-    index = tonumber(index) or 0
+    index = (tonumber(index) or start_index) - start_index
     index = math.min(math.max(index, 0), #dirs - 1)
 
     vim.cmd("redraw | cd " .. dirs[index + 1])

@@ -24,6 +24,7 @@ Type number and <Enter> (empty cancels):
     config = function ()
         require("chdir").setup({
             sign = '-',
+            start_index = 0,
         })
     end,
 }
