@@ -39,19 +39,23 @@ local function change_directory_by_index(index)
     table.insert(dirs, path)
 
     if index == "" then
-        vim.api.nvim_echo({{dirs[1], "None"}}, false, {})
-        vim.api.nvim_echo({{line, "None"}}, false, {})
-
+        local prompt = string.format(
+            "%s\n%s\nType number and <Enter> (empty cancels): ",
+            dirs[1],
+            line
+        )
         vim.fn.inputsave()
-        index = vim.fn.input("Type number and <Enter> (empty cancels): ")
+        index = vim.fn.input(prompt)
         vim.fn.inputrestore()
-
-        if index == "" then
-            return
-        end
+        -- trim whitespace
+        index = index and index:gsub("^%s*(.-)%s*$", "%1")
     end
 
-    index = (tonumber(index) or start_index) - start_index
+    if not index:match("^%d+$") then
+        return
+    end
+
+    index = index  - start_index
     index = math.min(math.max(index, 0), #dirs - 1)
 
     vim.cmd("redraw | cd " .. dirs[index + 1])
