@@ -24,6 +24,10 @@ local function change_directory_by_index(index)
     local base = ""
     local line = ""
 
+    if vim.fn.isdirectory(path) == 0 then
+        return
+    end
+
     while not path_is_root(path) do
         base = vim.fn.fnamemodify(path, ":t")
         line = string.rep(sign, #base) .. dirs_index .. line
