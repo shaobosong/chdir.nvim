@@ -70,7 +70,7 @@ end
 
 function M.setup(user_config)
   M.config = vim.tbl_deep_extend("force", default_config, user_config or {})
-  vim.api.nvim_create_user_command("ChangeDirectory", function(opts)
+  vim.api.nvim_create_user_command("Chdir", function(opts)
     change_directory_by_index(opts.args)
   end, { nargs = '?' })
 end

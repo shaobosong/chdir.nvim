@@ -17,9 +17,9 @@ Type number and <Enter> (empty cancels):
 {
     "shaobosong/chdir.nvim",
     lazy = true,
-    cmd = { "ChangeDirectory" },
+    cmd = { "Chdir" },
     keys = {
-        { "<leader>ci", "<cmd>ChangeDirectory<cr>", mode = "" },
+        { "<leader>ci", "<cmd>Chdir<cr>", mode = "" },
     },
     config = function ()
         require("chdir").setup({
